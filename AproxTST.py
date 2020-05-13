@@ -107,12 +107,59 @@ def leTreeMin(G:list) -> list:
         T.append((a,b))
 
     return T
+
+def copyM(G:list) -> list:
+    """
+    una copia de una lista de listas
+    se mama el python
+    """
+    M = []
+    for x in G:
+        M.append(x.copy())
+
+    return M
             
+def leGrafConT(G:list,T:list) -> list:
+    """
+    La subgrafica de G que representa el arbol T
+    G es una lista de lista que repreenta la matriz
+    de pesos.
+    T es una lista de tuplas que representan aristas
+    que es la lista de aristas que forman un arbol de G.
+    Regresa la represntacion en matriz de T deacuerdo a G
+    """
+    Gt = copyM(G)
+    n = len(Gt) #G debe de ser una matriz cuadrada
+    noArc = -1 #debuger en visualizacion,
+    #y en este contexto que no hay distancia
+
+    #llenados de infinitosA
+    for i in range(0,n):
+        for j in range(0,n):
+            if i != j:
+                Gt[i][j] = noArc
+            else:
+                Gt[i][j] = 0
+
+    #solo estas aristas permaneceran en su valor original
+    for edge in T:
+        u = edge[0]
+        v = edge[1]
+        Gt[u][v] = G[u][v]
+        Gt[v][u] = G[v][u]
+        
+    #todo lo demas se a quedado igual segun G
+    return Gt
+
 displayM(G)
 print(isMetric(G))
 print('Le arbol')
 T = leTreeMin(G)
 print(T)
+print('Su grafo')
+Gt = leGrafConT(G,T)
+displayM(Gt)
+        
 
-            
+
             
