@@ -14,6 +14,14 @@ Z = [
     [1,1,0]
     ]
 
+G = [
+    [0,1,1,2,1],
+    [1,0,1,1,2],
+    [1,1,0,1,1],
+    [2,1,1,0,1],
+    [1,2,1,1,0]
+    ]
+
 #print(M) esta M mantiene un espacio metrico
 
 def displayM(M:list):
@@ -23,7 +31,7 @@ def displayM(M:list):
     for i in M:
         print(i) #la neta lo mantengo simple
 
-displayM(M)
+#displayM(M)
 
 def isMetric(M:list) -> bool:
     """
@@ -61,11 +69,50 @@ def isMetric(M:list) -> bool:
     #si no fallo todo eso
     return True
 
-print(isMetric(M))
+#print(isMetric(M))
 
-displayM(Z)
-print(isMetric(Z))
-                        
+#displayM(Z)
+#print(isMetric(Z))
+#que las matrix no sean vacias
+
+def leTreeMin(G:list) -> list:
+    """
+    El ya tu sabhe arbol generador de peso
+    minimo para las graficas -> matrices -> listas de listas,
+    en especial que cumplan isMetric.
+    algoritmo de Prim, version del libro Estructura de datos de Joyanes
+    de la pagina 479, adaptado a este contexto y a Python 3
+    """
+    T = [] #la lista de las aristas del arbol
+    V = set() #metele pawa, con un set
+    for i in range(0,len(G)):
+        V.add(i) #considerare los vertices como del 0 a len de la matriz
+        #como la etiqueta de los vertices
+    u = 0 #como primer vertice
+    W = {u}# segun el libro
+
+    while W != V:
+        temp = V.difference(W)
+        vMin = 999999999 #un numerote para empezar la busqueda por el minimo
+        a = 0 #recordara a u
+        b = 0 #recordara a v
+        for u in W:
+            for v in temp:
+                if G[u][v] < vMin:
+                    a = u
+                    b = v
+                    vMin = G[u][b]
+
+        W.add(b)
+        T.append((a,b))
+
+    return T
+            
+displayM(G)
+print(isMetric(G))
+print('Le arbol')
+T = leTreeMin(G)
+print(T)
 
             
             
