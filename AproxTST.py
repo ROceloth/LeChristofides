@@ -151,11 +151,11 @@ def leGrafConT(G:list,T:list) -> list:
     #todo lo demas se a quedado igual segun G
     return Gt
 
-def listConOddOfT(G:list) -> list:
+def listConOddOfT(G:list) -> set:
     """
     Un lista con los vertices de grado impar
     """
-    odds = []
+    odds = set()
     n = len(G)
     for i in range(0,n):
         verTOdd = 0
@@ -163,7 +163,7 @@ def listConOddOfT(G:list) -> list:
             if G[i][j] != -1 and (i != j):
                 verTOdd += 1
         if verTOdd % 2 != 0: #impar entras
-            odds.append(i)
+            odds.add(i)
     return odds
         
 
