@@ -151,6 +151,22 @@ def leGrafConT(G:list,T:list) -> list:
     #todo lo demas se a quedado igual segun G
     return Gt
 
+def listConOddOfT(G:list) -> list:
+    """
+    Un lista con los vertices de grado impar
+    """
+    odds = []
+    n = len(G)
+    for i in range(0,n):
+        verTOdd = 0
+        for j in range(0,n):
+            if G[i][j] != -1 and (i != j):
+                verTOdd += 1
+        if verTOdd % 2 != 0: #impar entras
+            odds.append(i)
+    return odds
+        
+
 displayM(G)
 print(isMetric(G))
 print('Le arbol')
@@ -159,6 +175,9 @@ print(T)
 print('Su grafo')
 Gt = leGrafConT(G,T)
 displayM(Gt)
+print('Lista de vertices de grado impar')
+oddV = listConOddOfT(Gt)
+print(oddV)
         
 
 
