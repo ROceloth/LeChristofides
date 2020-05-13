@@ -184,15 +184,6 @@ def constSubH(G:list,odds:set) -> list:
     #una copia a modificar
     H = copyM(G)
 
-    """
-    for v in excluidos:
-        for i in range(0,n):
-            for j in range(0,n):
-                if i != j:
-                    H[v][j] = -1 #toda la fila
-                    H[i][v] = -1 #toda la columna
-    """
-
     for v in excluidos:
         for i in range(0,n):
             if i != v: #sin el (v,v)
@@ -203,6 +194,51 @@ def constSubH(G:list,odds:set) -> list:
 
     return H
 
+#minimumWeightedPerfectMatching a la ñera
+def mWPMn(H:list, odds:set) -> list:
+    """
+    Hasta este punto seguido en el algoritmo en
+    general H tiene las siguiente propiedades importantes
+    1) Provino desde un espacio metrico
+    2) Se relaciono de la grafica G por su arbol minimo T
+    3) El numero de vertices de grado impar del arbol es un numero par
+    4) Con esto es posible un perfect matching
+    5) H es la subgrafica de G inducida por esos nodos de grado impar
+    6) Porque G es completa, H conserva las conecciones entre sus vertices
+
+    Por todo esto se puede buscar el mWPM en H de forma voraz y proseguir
+    delimitando sus obciones deacuerdo al peso de las aristas y las
+    aristas ya emparejadas(con su chanvelan)
+    """
+
+    Todds = list(odds)
+    cobert = set()
+    #cobert.add(Todds[0]) #un elemento par iniciar
+    n = len(H)
+
+    visto = set() #control sobre vertices recorridos, evita compartir endpoints
+    Mh = []
+
+    while cobert != odds:
+        #iteramos sobre H 
+        for u in odds:
+            vMin = 999999999
+            a = 0 #recordara a u
+            b = 0 #recordara a v
+            if u not in cobert:
+                for v in range(0,n):
+                    if H[u][v] != 0 and H[u][v] != -1: #valor valido
+                        if H[u][v] < vMin and v not in cobert:
+                            vMin = H[u][v]
+                            a = u #aunque u no cambiara mantiene la constistencia
+                            b = v
+                Mh.append((a,b))
+                cobert.add(a)
+                cobert.add(b) #como es un set los elementos ya existentes
+                #no reflejan un cambio
+
+    return Mh
+                    
 displayM(G)
 print(isMetric(G))
 print('Le arbol')
@@ -217,6 +253,9 @@ print(oddV)
 print('Subgrafica inducida por esos vertices (de la origal)')
 H = constSubH(G,oddV)
 displayM(H)
+print('match perfecto minimo de H')
+Mh = mWPMn(H,oddV)
+print(Mh)
 
         
 
