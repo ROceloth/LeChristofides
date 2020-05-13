@@ -165,7 +165,43 @@ def listConOddOfT(G:list) -> set:
         if verTOdd % 2 != 0: #impar entras
             odds.add(i)
     return odds
-        
+
+def constSubH(G:list,odds:set) -> list:
+    """
+    Construye la subgrafica inducida por
+    un conjunto de vertices 'odds' sobre la
+    grafica: matriz : lista de lista
+    """
+    #La grafica se queda igual excepto
+    #por los vertices de G que no aparecieron en odds
+    vertex = set()
+    n = len(G)
+    for i in range(0,n):
+        vertex.add(i)
+
+    excluidos = vertex.difference(odds)
+
+    #una copia a modificar
+    H = copyM(G)
+
+    """
+    for v in excluidos:
+        for i in range(0,n):
+            for j in range(0,n):
+                if i != j:
+                    H[v][j] = -1 #toda la fila
+                    H[i][v] = -1 #toda la columna
+    """
+
+    for v in excluidos:
+        for i in range(0,n):
+            if i != v: #sin el (v,v)
+                H[i][v] = -1 #todo la columna
+        for j in range(0,n):
+            if j != v:
+                H[v][j] = -1
+
+    return H
 
 displayM(G)
 print(isMetric(G))
@@ -178,6 +214,10 @@ displayM(Gt)
 print('Lista de vertices de grado impar')
 oddV = listConOddOfT(Gt)
 print(oddV)
+print('Subgrafica inducida por esos vertices (de la origal)')
+H = constSubH(G,oddV)
+displayM(H)
+
         
 
 
