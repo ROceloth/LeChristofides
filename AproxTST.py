@@ -300,7 +300,8 @@ def list_vecinosA(v:int, E:list) -> list:
             A2.append(edge)
 
     return A2
-    
+
+#https://algorithmist.com/wiki/Euler_tour
 def find_tour(u:int,A:list,tour:list) -> list:
     """
     Si C es cualquier ciclo en una grafica Euleriana,
@@ -323,6 +324,19 @@ def find_tour(u:int,A:list,tour:list) -> list:
 
     return tour #con la pawa de la recursion
 
+def shotKutes(W:list) -> list:
+    """
+    Regresa una lista, que conserva el orden
+    de sus elementos y sin elementos repetidos
+    """
+    #Esta funcion es de las primeras cosas que estudie en Python, UwU
+    P = []
+    for i in W:
+        if i not in P:
+            P.append(i)
+
+    return P
+
 print('La grafica G')
 displayM(G)
 print(isMetric(G)) #cumple las propiedades del espacio metrico
@@ -332,7 +346,7 @@ print(T)
 print('T (su grafo), en forma de matriz')
 Gt = leGrafConT(G,T)
 displayM(Gt)
-print('Lista de vertices de grado impar de T')
+print('Conjunto de vertices de grado impar de T')
 oddV = listConOddOfT(Gt)
 print(oddV)
 print('Subgrafica H, inducida por esos vertices (de la origal)')
@@ -341,12 +355,16 @@ displayM(H)
 print('Match perfecto minimo de H')
 Mh = mWPMn(H,oddV)
 print(Mh)
-print('MultiGrafo de D = T + Mh')
+print('MultiGrafo Euleriano D = T + Mh')
 D = eulerMultigrafConList(T,Mh)
 print(D)
-print('Un tour Euleriano de D')
-tour = eulerianTour(D)
-print(tour)
+print('W un tour Euleriano de D')
+W = eulerianTour(D)
+print(W)
+print('Usando atajos (shortcuts), el tour del agente viajero (salesman tour)')
+print('(Ciclo Hamiltoniano de la grafica G)')
+P = shotKutes(W)
+print(P)
 
 
 
