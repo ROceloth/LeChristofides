@@ -257,7 +257,70 @@ def eulerMultigrafConList(T:list,Mh:list) -> list:
     """
     return D
 
-                    
+def eulerianTour(D:list, G:list) -> list:
+    """
+    Es la interfaz para preparar la funcion para
+    encontrar el tour
+    G es la matriz
+    D es la lista de vertices de una posible multigrafica
+    """
+    A = D.copy()
+
+    e0 = D[0] #la primera arista
+    u0 = e0[0] #el primer vertice
+
+    return find_tour(u0,A)
+
+def list_vecinosA(v:int, E:list) -> list:
+    """
+    Una funcion auxiliar que regresa la lista de aristas
+    a la cual es incidente v
+    E es una lista de aristas, tuplas de la forma (u,v)
+    Se regresa la lista de tuplas de la forma (u,v,k) o (v,u,k)
+    que indica la ocurencia de aristas al estilo no dirigidas
+    donde las primeras dos entradas es la lista, la entrada k
+    es el indice en la lista donde esta originalmente la arista,
+    k va a ser importante para borrar por indice
+    """
+
+    n = len(E)
+    A2 = []
+    for i in range(0,n):
+        e = E[i]
+        a = e[0]
+        b = e[1]
+
+        if a == v:
+            edge = (a,b,i)
+            A2.append(edge)
+
+        if b == v:
+            edge = (b,a,i)
+            A2.append(edge)
+
+    return A2
+    
+
+E = [(0,1),(0,2),(0,4),(1,3),(0,2),(3,4)]
+print(E)
+v = 2
+print(v)
+d = list_vecinosA(v,E)
+print(d)
+
+
+
+def find_tour(u:int,A:list) -> list:
+    """
+    Si C es cualquier ciclo en una grafica Euleriana,
+    despues de remover las aristas de C, la grafica resultante,
+    sus componentes conexas tambien son graficas eulerianas
+    """
+
+    pass
+            
+
+"""         
 displayM(G)
 print(isMetric(G))
 print('Le arbol')
@@ -278,8 +341,7 @@ print(Mh)
 print('MultiGrafo de T + Mh')
 D = eulerMultigrafConList(T,Mh)
 print(D)
-
-
+"""
         
 
 
