@@ -238,6 +238,25 @@ def mWPMn(H:list, odds:set) -> list:
                 #no reflejan un cambio
 
     return Mh
+
+
+def eulerMultigrafConList(T:list,Mh:list) -> list:
+    """
+    A partir de este punto, la construccion de las graficas
+    pasan a ser una multigrafica Euleriana
+    """
+    D = T + Mh #siguendo la literatura
+    #la neta solo fue una lista de sumas pero
+    #queda desacoplado por buenas tecnicas de prog
+    # - XD lo dice el que esta sigueindo una estrategia funcional en python
+    """
+    Una matriz de adyacencias ya no es adecuada para la representacion
+    ahora tenemos una lista de las aristas, sus pesos de las nuevas
+    aristas que posiblente se repitas (u,v) son las dadas por G original
+    i.e G[u][v] = peso de las aristas en la lista D
+    """
+    return D
+
                     
 displayM(G)
 print(isMetric(G))
@@ -253,9 +272,13 @@ print(oddV)
 print('Subgrafica inducida por esos vertices (de la origal)')
 H = constSubH(G,oddV)
 displayM(H)
-print('match perfecto minimo de H')
+print('Match perfecto minimo de H')
 Mh = mWPMn(H,oddV)
 print(Mh)
+print('MultiGrafo de T + Mh')
+D = eulerMultigrafConList(T,Mh)
+print(D)
+
 
         
 
