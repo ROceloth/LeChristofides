@@ -257,7 +257,7 @@ def eulerMultigrafConList(T:list,Mh:list) -> list:
     """
     return D
 
-def eulerianTour(D:list, G:list) -> list:
+def eulerianTour(D:list) -> list:
     """
     Es la interfaz para preparar la funcion para
     encontrar el tour
@@ -268,8 +268,9 @@ def eulerianTour(D:list, G:list) -> list:
 
     e0 = D[0] #la primera arista
     u0 = e0[0] #el primer vertice
+    tour = []
 
-    return find_tour(u0,A)
+    return find_tour(u0,A,tour)
 
 def list_vecinosA(v:int, E:list) -> list:
     """
@@ -300,49 +301,54 @@ def list_vecinosA(v:int, E:list) -> list:
 
     return A2
     
-
-E = [(0,1),(0,2),(0,4),(1,3),(0,2),(3,4)]
-print(E)
-v = 2
-print(v)
-d = list_vecinosA(v,E)
-print(d)
-
-
-
-def find_tour(u:int,A:list) -> list:
+def find_tour(u:int,A:list,tour:list) -> list:
     """
     Si C es cualquier ciclo en una grafica Euleriana,
     despues de remover las aristas de C, la grafica resultante,
     sus componentes conexas tambien son graficas eulerianas
     """
+    A2 = list_vecinosA(u,A)
+    for superEdge in A2:
+        #a = superEdge[0] #u
+        b = superEdge[1] #v
+        k = superEdge[2]
 
-    pass
-            
+        A.pop(k)
+        find_tour(b,A,tour)
+        break #cuando se resuelven las llamadas recursivas
+        #los elementos de la lista ya no existen, pero la secuencia
+        #continua dentro del for, sus siguientes elementos ya no tiene
+        #una referencia, debe terminar ahi mismo
+    tour.append(u)
 
-"""         
+    return tour #con la pawa de la recursion
+
+print('La grafica G')
 displayM(G)
-print(isMetric(G))
-print('Le arbol')
+print(isMetric(G)) #cumple las propiedades del espacio metrico
+print('Le arbol de peso minimo T de la grafica G')
 T = leTreeMin(G)
 print(T)
-print('Su grafo')
+print('T (su grafo), en forma de matriz')
 Gt = leGrafConT(G,T)
 displayM(Gt)
-print('Lista de vertices de grado impar')
+print('Lista de vertices de grado impar de T')
 oddV = listConOddOfT(Gt)
 print(oddV)
-print('Subgrafica inducida por esos vertices (de la origal)')
+print('Subgrafica H, inducida por esos vertices (de la origal)')
 H = constSubH(G,oddV)
 displayM(H)
 print('Match perfecto minimo de H')
 Mh = mWPMn(H,oddV)
 print(Mh)
-print('MultiGrafo de T + Mh')
+print('MultiGrafo de D = T + Mh')
 D = eulerMultigrafConList(T,Mh)
 print(D)
-"""
-        
+print('Un tour Euleriano de D')
+tour = eulerianTour(D)
+print(tour)
+
+
 
 
             
