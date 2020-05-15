@@ -337,6 +337,30 @@ def shotKutes(W:list) -> list:
 
     return P
 
+#estas funciones ya estan adecuadas a todo el contexto seguido
+def pesoTour(P:list, G:list) -> int:
+    """
+    P es una lista que representa un tour de G,
+    i.e una lista de vertices, que es una permutacion de
+    los vertices de G
+    G es matriz de pesos
+    Regresa el peso del tour
+    """
+    s = 0 #suma
+    n = len(P)
+    for i in range(0,n):#pensando en indices
+        if (i+1) != n:
+            u = P[i]
+            v = P[i+1]
+            s += G[u][v]
+    #el ultimo
+    a = P[0]
+    z = P[-1]
+    s += G[z][a]
+
+    return s
+
+
 print('La grafica G')
 displayM(G)
 print(isMetric(G)) #cumple las propiedades del espacio metrico
@@ -352,7 +376,7 @@ print(oddV)
 print('Subgrafica H, inducida por esos vertices (de la origal)')
 H = constSubH(G,oddV)
 displayM(H)
-print('Match perfecto minimo de H')
+print('Mh, match perfecto minimo de H')
 Mh = mWPMn(H,oddV)
 print(Mh)
 print('MultiGrafo Euleriano D = T + Mh')
@@ -364,8 +388,8 @@ print(W)
 print('Usando atajos (shortcuts), el tour del agente viajero (salesman tour)')
 print('(Ciclo Hamiltoniano de la grafica G)')
 P = shotKutes(W)
-print(P)
-
+s = pesoTour(P,G)
+print(P,'coste = ',s)
 
 
 
