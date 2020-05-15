@@ -1,29 +1,3 @@
-M = [
-    [0, 12,10,9, 12,11,12],
-    [12,0, 8, 12,10,11,12],
-    [10,8, 0, 11,3, 8, 9],
-    [9, 12,11,0, 11,10,12],
-    [12,10,3, 11,0,  6,7],
-    [11,11,8, 10,6, 0, 9],
-    [12,12,9, 12,7, 9, 0]
-    ]
-
-Z = [
-    [0,5,1],
-    [5,0,1],
-    [1,1,0]
-    ]
-
-G = [
-    [0,1,1,2,1],
-    [1,0,1,1,2],
-    [1,1,0,1,1],
-    [2,1,1,0,1],
-    [1,2,1,1,0]
-    ]
-
-#print(M) esta M mantiene un espacio metrico
-
 def displayM(M:list):
     """
     osea imprimir una matriz
@@ -210,7 +184,6 @@ def mWPMn(H:list, odds:set) -> list:
     delimitando sus obciones deacuerdo al peso de las aristas y las
     aristas ya emparejadas(con su chanvelan)
     """
-
     Todds = list(odds)
     cobert = set()
     #cobert.add(Todds[0]) #un elemento par iniciar
@@ -360,37 +333,62 @@ def pesoTour(P:list, G:list) -> int:
 
     return s
 
+#Una grafica de prueba
+G = [
+    [0,1,1,2,1],
+    [1,0,1,1,2],
+    [1,1,0,1,1],
+    [2,1,1,0,1],
+    [1,2,1,1,0]
+    ]
 
-print('La grafica G')
-displayM(G)
-print(isMetric(G)) #cumple las propiedades del espacio metrico
-print('Le arbol de peso minimo T de la grafica G')
-T = leTreeMin(G)
-print(T)
-print('T (su grafo), en forma de matriz')
-Gt = leGrafConT(G,T)
-displayM(Gt)
-print('Conjunto de vertices de grado impar de T')
-oddV = listConOddOfT(Gt)
-print(oddV)
-print('Subgrafica H, inducida por esos vertices (de la origal)')
-H = constSubH(G,oddV)
-displayM(H)
-print('Mh, match perfecto minimo de H')
-Mh = mWPMn(H,oddV)
-print(Mh)
-print('MultiGrafo Euleriano D = T + Mh')
-D = eulerMultigrafConList(T,Mh)
-print(D)
-print('W un tour Euleriano de D')
-W = eulerianTour(D)
-print(W)
-print('Usando atajos (shortcuts), el tour del agente viajero (salesman tour)')
-print('(Ciclo Hamiltoniano de la grafica G)')
-P = shotKutes(W)
-s = pesoTour(P,G)
-print(P,'coste = ',s)
+def nota():
+    print('Para evitar tener que escribir y validar una matriz\n',
+          'por la entrada estandar (que seria muy engoroso), se mostrara\n',
+          'un ejemplo con una matriz de 5 vertices')
 
 
+def main(G:list):
+    #https://en.wikipedia.org/wiki/Christofides_algorithm
+    print('Problema Metric TSP')
+    print('Christofides algorithm')
+    try:
+        if isMetric(G):
+            nota()
+            print('La grafica G, es una grafrica en un espacio metrico')
+            displayM(G)
+            #print(isMetric(G)) #cumple las propiedades del espacio metrico
+            print('El arbol de peso minimo T de la grafica G')
+            T = leTreeMin(G)
+            print(T)
+            print('T (su grafo), en forma de matriz')
+            Gt = leGrafConT(G,T)
+            displayM(Gt)
+            print('Conjunto de vertices de grado impar de T')
+            oddV = listConOddOfT(Gt)
+            print(oddV)
+            print('Subgrafica H, inducida por esos vertices (de la origal)')
+            H = constSubH(G,oddV)
+            displayM(H)
+            print('Mh, match perfecto minimo de H')
+            Mh = mWPMn(H,oddV)
+            print(Mh)
+            print('MultiGrafo Euleriano D = T + Mh')
+            D = eulerMultigrafConList(T,Mh)
+            print(D)
+            print('W un tour Euleriano de D')
+            W = eulerianTour(D)
+            print(W)
+            print('Usando atajos (shortcuts), el tour del agente viajero (salesman tour)')
+            print('(Ciclo Hamiltoniano de la grafica G)')
+            P = shotKutes(W)
+            s = pesoTour(P,G)
+            print(P,'coste = ',s)
+        else:
+            raise metricError
+    except metricError:
+        print('La matriz no representa un espacio metrico')
+
+main(G)
 
             
