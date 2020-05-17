@@ -235,20 +235,58 @@ def eulerianTour(D:list) -> list:
     Es la interfaz para preparar la funcion para
     encontrar el tour
     G es la matriz
-    D es la lista de vertices de una posible multigrafica
+    D es la lista de vertices de una posible multigrafica, es un
+    lista de tuplas
     """
     A = D.copy()
+    Av = list_Avalible(A) #tabla/matix
 
     e0 = D[0] #la primera arista
     u0 = e0[0] #el primer vertice
     tour = []
 
-    return find_tour(u0,A,tour)
+    return find_tour(u0,Av,tour)
+
+
+def list_Avalible(A:list) -> set:
+    """
+    Las aristas tenido una referencia de si estan disponibles
+    es decir si no han sido visitadas, esta funcion crea
+    la estrctura de las aristas para que guarde un booleano
+    por arista, inicialmente toda arista esta disponible
+    En conclusion se vuelve una tabla, para ver el estado
+    de una arista, todo esto en una matriz
+    """
+    Av = []
+    for edge in A:
+        e = []
+        e.append(edge)
+        e.append(True)
+        Av.append(e)
+
+    return Av
 
 def list_vecinosA(v:int, E:list) -> list:
     """
+    Actualiado ahora mas a conveniencia E es una matris
+    lista de listas los indices de E se mantienen como la
+    posicion donde se encuentra originalmente la arista en la lista
+    pero el objeto ahora en E es otra lista;
+    E[i] es una lista que contiene [(u,v), Bool] tupla y booleano
+    ¡Advertencia por como es python para aceder a las subestructuras
+    es mejor hacerlo por muy claro!
+    Recuperar la lista (fila) de la que se habla
+    ek = E[k] -> k-esima arista con bool
+    ek es una lista de tupla boleano
+    ek[1] accede al booleano
+    edge = ek[0] accede a la tupla
+    edge[0] accede a u
+    edge[1] accede a v
+
+    ¡MAMES!.jpg
+    
     Una funcion auxiliar que regresa la lista de aristas
-    a la cual es incidente v
+    a la cual es incidente v, mejor dicho donde aparece v
     E es una lista de aristas, tuplas de la forma (u,v)
     Se regresa la lista de tuplas de la forma (u,v,k) o (v,u,k)
     que indica la ocurencia de aristas al estilo no dirigidas
@@ -260,23 +298,28 @@ def list_vecinosA(v:int, E:list) -> list:
     n = len(E)
     A2 = []
     for i in range(0,n):
-        e = E[i]
-        a = e[0]
-        b = e[1]
+        ek = E[i] #lista arista/boolean
+        edge = ek[0] #acceso a la tupla
+        #acceso a los endpoints
+        a = edge[0] #u (el v del paramento es de comparacion)
+        b = edge[1] #v (podira ser alguno de estos dos)
 
         if a == v:
-            edge = (a,b,i)
-            A2.append(edge)
+            edgeIx = (a,b,i) #arista con Index
+            A2.append(edgeIx)
 
         if b == v:
-            edge = (b,a,i)
-            A2.append(edge)
+            edgeIx = (b,a,i)
+            A2.append(edgeIx)
 
     return A2
 
 #https://algorithmist.com/wiki/Euler_tour
 def find_tour(u:int,A:list,tour:list) -> list:
     """
+    u es el vetice con el que empieza
+    A es una tabla de aristas y su disponibilidad
+    tour la estructura donde se guarda el tour, una lista
     Si C es cualquier ciclo en una grafica Euleriana,
     despues de remover las aristas de C, la grafica resultante,
     sus componentes conexas tambien son graficas eulerianas
@@ -285,17 +328,24 @@ def find_tour(u:int,A:list,tour:list) -> list:
     for superEdge in A2:
         #a = superEdge[0] #u
         b = superEdge[1] #v
-        k = superEdge[2]
-
-        A.pop(k)
-        find_tour(b,A,tour)
-        break #cuando se resuelven las llamadas recursivas
-        #los elementos de la lista ya no existen, pero la secuencia
-        #continua dentro del for, sus siguientes elementos ya no tiene
-        #una referencia, debe terminar ahi mismo
+        k = superEdge[2] #index tabla
+        
+        if A[k][1]:
+            A[k][1] = False # visitada
+            find_tour(b,A,tour)
     tour.append(u)
 
-    return tour #con la pawa de la recursion
+    return tour
+
+"""
+A = [(0,3),(0,2),(2,4),(4,5),
+     (4,6),(2,1),(1,2),(3,5),(4,6)]
+print(A)
+#Av = list_Avalible(A)
+#print(Av)
+T = eulerianTour(A)
+print(T)
+"""
 
 def shotKutes(W:list) -> list:
     """
