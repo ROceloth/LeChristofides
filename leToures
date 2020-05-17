@@ -47,3 +47,29 @@ find_tour(0)
 		T <- 3
 	T <- 1
 T <- 0
+
+
+E =[(0, 3)x, (0, 2)x, (2, 4)x, (4, 5)x, (4, 6),
+ (2, 1), (1, 2), (3, 5)x, (4, 6)] #wacha por los breaks
+# no todas las aristas se procesaron, pero habia problemas
+#con eliminarlas de la lista, pero se me ocurio la idea de 
+como estas pruevas irlas marcando
+T = [0,3,5,4,2,0]
+find_tour(0)
+	[(0,2)x,(0,3)]
+	find_tour(2)
+		[(2,4)x,(2,1),(2,1)]
+		find_tour(4)
+			[(4,5)x,(4,6),(4,6)]
+			find_tour(5)
+				[(5,3)x]
+				find_tour(3)
+					[(3,0)x]
+					find_tour(0)
+						[-]
+					T <- 0
+				T <- 3
+			T <- 5
+		T <- 4
+	T <- 2
+T <- 0
