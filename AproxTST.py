@@ -342,6 +342,17 @@ G = [
     [1,2,1,1,0]
     ]
 
+M = [
+    [0, 12,10,9, 12,11,12],
+    [12,0, 8, 12,10,11,12],
+    [10,8, 0, 11,3, 8, 9],
+    [9, 12,11,0, 11,10,12],
+    [12,10,3, 11,0,  6,7],
+    [11,11,8, 10,6, 0, 9],
+    [12,12,9, 12,7, 9, 0]
+    ]
+
+
 def nota():
     print('Para evitar tener que escribir y validar una matriz\n',
           'por la entrada estandar (que seria muy engoroso), se mostrara\n',
@@ -389,6 +400,6 @@ def main(G:list):
     except metricError:
         print('La matriz no representa un espacio metrico')
 
-main(G)
+main(M)
 
             
