@@ -354,9 +354,11 @@ M = [
 
 
 def nota():
-    print('Para evitar tener que escribir y validar una matriz\n',
-          'por la entrada estandar (que seria muy engoroso), se mostrara\n',
-          'un ejemplo con una matriz de 5 vertices')
+    #print('Para evitar tener que escribir y validar una matriz\n',
+     #     'por la entrada estandar (que seria muy engoroso), se mostrara\n',
+      #    'un ejemplo con una matriz de 5 vertices')
+    print('Los -1 representa que no existe el arco o que no hay una conexion\n'
+          +'entre los vertices de las matrices que se van creando')
 
 
 def main(G:list):
@@ -396,9 +398,10 @@ def main(G:list):
             s = pesoTour(P,G)
             print(P,'coste = ',s)
         else:
-            raise metricError
-    except metricError:
-        print('La matriz no representa un espacio metrico')
+            raise ValueError
+    except ValueError:
+        print('Lastima, la matriz no representa un espacio metrico\n,'
+              +'sobre el cual aplicar el algoritmo.')
 
 #main(M)
 
@@ -411,24 +414,96 @@ def menu():
     displayM(M)
     print()
     print('Elije G|M, o presiona x para escribir tu propia matriz')
-    op = input('Tu opcion:')
-    try:
-        while True:
-            if op == 'G':
-                main(G)
-                break
-            elif op == 'M':
-                main(M)
-                break
-            elif op == 'x':
-                #X = constM()
-                #main(X)
-                print('ok')
-                break
+    while True:
+        op = input('Tu opcion:')
+        if op.upper() == 'G':
+            main(G)
+            break
+        elif op.upper() == 'M':
+            main(M)
+            break
+        elif op.lower() == 'x':
+            X = constM()
+            main(X)
+            break
+        else:
+            print('Entrada invalida, intentalo de nuevo')
+        
+
+def constM():
+    """
+    Ingresa y construye una matriz cuadrada completa
+    solo necesita los valores de la diagonal superior
+    """
+    n = constMpt2()
+
+    X = [] #una lista
+    for i in range(0,n):
+        X.append([])#una lista de listas = matriz
+
+    #llena la matrix para trabajar por posiciones
+    for i in range(0,n):
+        for j in range(0,n):
+            X[i].append(-1)
+
+    X = constMpt3(X,n)
+    return finalConf(X)
+
+def constMpt2(x=-1):
+    """
+    Para que devuelva un n valido
+    n entero y n > 0, por defaut
+    y adecuada a un numero que le pasen
+    """
+    while True:
+        try:
+            if x == -1:
+                n = int(input('Escribe la dimension (n) de la matriz cuadrada: '))
+                if n > 1:
+                    return n
+                else:
+                    raise ValueError
             else:
-                raise ValueError
-    except ValueError:
-        print('Entrada invalida, intentalo de nuevo')
+                z = int(input())
+                if z > 0:
+                    return z
+                else:
+                    raise ValueError
+        except ValueError:
+            print('Valor invalido, intentalo de nuevo')
+
+def constMpt3(X:list,n:int) -> list:
+    """
+    Llena por la diagonal superior
+    y rellena simetricamente, los valores de la diagonal son 0
+    """
+    
+    for i in range(0,n):
+        for j in range(0,n):
+            if i == j:
+                X[i][j] = (0)
+            elif i < j:
+                print('Escribe el valor de A['+str(i)+']['+str(j)+']:', end=' ')
+                w = constMpt2(1)
+                X[i][j] = w
+                X[j][i] = w
+    return X
+
+def finalConf(X:list):
+    """
+    Confirama si quieres continuar con esta lista o
+    eligir otra
+    """
+    print('Esta es la matriz resultante, ¿quieres continuar? [S/N]')
+    displayM(X)
+    while not False:
+        op = input()
+        if op.upper() == 'S':
+            return X
+        elif op.upper() == 'N':
+            print('Se construira otra matriz')
+            constM()
+        else:
+            print('Valor invalido, intentalo de nuevo')
 
 menu()
-            
