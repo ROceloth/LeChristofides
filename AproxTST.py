@@ -400,6 +400,35 @@ def main(G:list):
     except metricError:
         print('La matriz no representa un espacio metrico')
 
-main(M)
+#main(M)
 
+def menu():
+    print('Elige alguna matriz de prueva o ingreasa la tuya')
+    print('G =')
+    displayM(G)
+    print()
+    print('M =')
+    displayM(M)
+    print()
+    print('Elije G|M, o presiona x para escribir tu propia matriz')
+    op = input('Tu opcion:')
+    try:
+        while True:
+            if op == 'G':
+                main(G)
+                break
+            elif op == 'M':
+                main(M)
+                break
+            elif op == 'x':
+                #X = constM()
+                #main(X)
+                print('ok')
+                break
+            else:
+                raise ValueError
+    except ValueError:
+        print('Entrada invalida, intentalo de nuevo')
+
+menu()
             
